@@ -1,0 +1,33 @@
+<DOCTYPE HTML>
+    <html>
+        <head>
+            <title>{% block title %}{% endblock %}</title>
+            <meta charset="UTF-8">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+            <script src="script.js"></script>
+        </head>
+        <body>
+            <div class="main">
+                <div class="main_head">
+                    <div class="main_head__logo">
+                        <h2>CosmoI</h2>
+                    </div>
+                    <div class="main_head__text">
+                        <ul>
+                            <li>
+                                <a href="/">Главная</a>
+                            </li>
+                            <li>
+                                <a href="/about">О нас</a>
+                            </li>
+                            <li>
+                                <a href="/faq">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% block text %}{% endblock %}
+            </div>
+            <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+        </body>
+    </html>
