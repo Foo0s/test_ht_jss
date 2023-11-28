@@ -1,9 +1,11 @@
 import tkinter
 import settings
+import re
 
 from math import *
 
 from tkinter import *
+from tkinter import messagebox
 
 class Application:
 
@@ -13,6 +15,8 @@ class Application:
         self.app.title(settings.NAME_APPLICATION)
         self.app.geometry(f"{settings.SCREEN_WEIGHT}x{settings.SCREEN_HEIGHT}")
         self.app.resizable(False, False)
+        self.icon = PhotoImage(file='../static/img/m_icon.png')
+        self.app.iconphoto(False, self.icon)
 
         #Кнопки цифр
         self.frame_main = tkinter.Frame(self.app, bg='black', bd=1)
@@ -50,8 +54,11 @@ class Application:
         self.bt_9 = tkinter.Button(self.frame_main, text='9', command=lambda: self.btn_clicked(self.bt_9.config('text')[-1]))
         self.bt_9.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1])
 
-        self.result = tkinter.Button(self.frame_main, text="=")
-        self.result.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+4, height=settings.SIZE_OF_BUTTON.split('x')[-1], command=self.result_operations)
+        self.result = tkinter.Button(self.frame_main, text="=", bg='yellow', fg='black')
+        self.result.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=settings.SIZE_OF_BUTTON.split('x')[-1], command=self.result_operations)
+
+        self.btn_point = tkinter.Button(self.frame_main, text='.', command=lambda: self.btn_clicked(self.btn_point.config('text')[-1]))
+        self.btn_point.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=settings.SIZE_OF_BUTTON.split('x')[-1])
 
         self.frame_main.pack()
         self.bt_0.grid(row=0, column=1, padx=2, pady=2)
@@ -64,7 +71,8 @@ class Application:
         self.bt_7.grid(row=2, column=2, padx=2, pady=2)
         self.bt_8.grid(row=2, column=3, padx=2, pady=2)
         self.bt_9.grid(row=3, column=1, padx=2, pady=2)
-        self.result.grid(row=3, column=2, columnspan=2)
+        self.btn_point.grid(row=3, column=2, padx=2, pady=2)
+        self.result.grid(row=3, column=3, columnspan=2)
 
 
         self.entry_main = tkinter.Entry( bg='black', foreground='white', justify='left')
@@ -75,7 +83,7 @@ class Application:
 
         self.frame_operations = tkinter.Frame(self.app, bg='black', bd=1)
 
-        self.bt_clear = tkinter.Button(self.frame_operations, text='C')
+        self.bt_clear = tkinter.Button(self.frame_operations, text='C', bg='orange', fg='black')
         self.bt_clear.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1], command=self.clear_entry)
 
         self.bt_pl = tkinter.Button(self.frame_operations, text='+')
@@ -99,13 +107,13 @@ class Application:
 
         self.frame_dop_operations = tkinter.Frame(self.app, bg='black', bd=1)
 
-        self.bt_sk_1 = Button(self.frame_dop_operations, text='(')
+        self.bt_sk_1 = Button(self.frame_dop_operations, text='(', bg='yellow', fg='black')
         self.bt_sk_1.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1])-1, command=lambda: self.btn_clicked(self.bt_sk_1.configure('text')[-1]))
 
-        self.bt_sk_2 = Button(self.frame_dop_operations, text=')')
+        self.bt_sk_2 = Button(self.frame_dop_operations, text=')', bg='yellow', fg='black')
         self.bt_sk_2.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1])-1, command=lambda: self.btn_clicked(self.bt_sk_2.configure('text')[-1]))
 
-        self.bt_clear_s = Button(self.frame_dop_operations, text='C--')
+        self.bt_clear_s = Button(self.frame_dop_operations, text='C--', bg='orange', fg='black')
         self.bt_clear_s.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1])-1, command=self.btn_clear_s)
 
         self.bt_sk_1.grid(row=0, column=1, padx=2, pady=2)
@@ -124,7 +132,7 @@ class Application:
         self.bt_st.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
 
         self.bt_fact = Button(self.frame_d_operations, text='x!')
-        self.bt_fact.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
+        self.bt_fact.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.factoriaB)
 
         self.bt_cos = Button(self.frame_d_operations, text='cos')
         self.bt_cos.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
@@ -147,7 +155,7 @@ class Application:
 
 
     def bt_step_click(event):
-        pass
+        event.entry_main.insert(len(event.entry_main.get()), "**")
 
     def clear_entry(event):
         event.entry_main.delete(0, len(event.entry_main.get()))
@@ -160,28 +168,52 @@ class Application:
         print(event.entry_main)
 
 
-    def factoriaB(event, text):
-        try:
-            pass
-        except Exception:
-            print("Error")
+    def factoriaB(event):
+        event.entry_main.insert(len(event.entry_main.get()), "!")
 
 
     def result_operations(event):
         try:
-
             text_ans = event.entry_main.get()
-            result = eval(text_ans)
-            event.entry_main.delete(0, len(text_ans))
-            event.entry_main.insert(0, result)
+            flag_factorial = False
+
+            if "!" in text_ans:
+                indx_factorial = event.entry_main.get().index("!")
+                flag_factorial = True
+                if text_ans[indx_factorial-2] not in '()**2ln(':
+                    result = event.factorial_results()
+                    event.entry_main.delete(0, len(event.entry_main.get()))
+                    event.entry_main.insert(0, result)
+
+                else:
+                    event.entry_main.delete(0, len(event.entry_main.get()))
+                    event.entry_main.insert(0, 'Error!')
+
+            if flag_factorial == False:
+                result = eval(text_ans)
+                event.entry_main.delete(0, len(text_ans))
+                event.entry_main.insert(0, result)
 
         except Exception:
             event.entry_main.delete(0, len(event.entry_main.get()))
             event.entry_main.insert(0, 'Error!')
             print("Error")
 
+    def factorial_results(event) -> int:
+        number = int(event.entry_main.get()[:event.entry_main.get().index("!")])
+        res = 1
+        while number >= 1:
+            res *= number
+            number -= 1
+        return res
+
+    def message_box_exit(self):
+        self.ms_b = messagebox.askokcancel('Выход', "Вы уверены?")
+        if self.ms_b:
+            self.app.destroy()
 
     def display(self):
+        self.app.protocol("WM_DELETE_WINDOW", self.message_box_exit)
         self.app.mainloop()
 
 
