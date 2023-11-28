@@ -1,8 +1,7 @@
 import tkinter
 import settings
-import re
+import math
 
-from math import *
 
 from tkinter import *
 from tkinter import messagebox
@@ -15,7 +14,7 @@ class Application:
         self.app.title(settings.NAME_APPLICATION)
         self.app.geometry(f"{settings.SCREEN_WEIGHT}x{settings.SCREEN_HEIGHT}")
         self.app.resizable(False, False)
-        self.icon = PhotoImage(file='../static/img/m_icon.png')
+        self.icon = PhotoImage(file='../../static/img/m_icon.png')
         self.app.iconphoto(False, self.icon)
 
         #Кнопки цифр
@@ -84,19 +83,19 @@ class Application:
         self.frame_operations = tkinter.Frame(self.app, bg='black', bd=1)
 
         self.bt_clear = tkinter.Button(self.frame_operations, text='C', bg='orange', fg='black')
-        self.bt_clear.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1], command=self.clear_entry)
+        self.bt_clear.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=settings.SIZE_OF_BUTTON.split('x')[-1], command=self.clear_entry)
 
         self.bt_pl = tkinter.Button(self.frame_operations, text='+')
-        self.bt_pl.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_pl.config('text')[-1]))
+        self.bt_pl.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_pl.config('text')[-1]))
 
         self.bt_mn = tkinter.Button(self.frame_operations, text='-')
-        self.bt_mn.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_mn.config('text')[-1]))
+        self.bt_mn.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_mn.config('text')[-1]))
 
         self.bt_ml = tkinter.Button(self.frame_operations, text='*')
-        self.bt_ml.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_ml.configure('text')[-1]))
+        self.bt_ml.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_ml.configure('text')[-1]))
 
         self.bt_dv = tkinter.Button(self.frame_operations, text='/')
-        self.bt_dv.configure(width=settings.SIZE_OF_BUTTON.split('x')[0], height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_dv.configure('text')[-1]))
+        self.bt_dv.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=settings.SIZE_OF_BUTTON.split('x')[-1], command=lambda: self.btn_clicked(self.bt_dv.configure('text')[-1]))
 
         self.bt_clear.grid(row=0, column=0, padx=2, pady=2)
         self.bt_pl.grid(row=1, column=0, padx=2, pady=2)
@@ -122,26 +121,26 @@ class Application:
 
         self.frame_dop_operations.place(x=settings.SCREEN_WEIGHT - 187, y=35)
 
-        self.frame_operations.place(x=settings.SCREEN_WEIGHT - 50, y=30)
+        self.frame_operations.place(x=settings.SCREEN_WEIGHT - 58, y=30)
 
 
 
         self.frame_d_operations = tkinter.Frame(self.app, bg='black', bd=1)
 
         self.bt_st = Button(self.frame_d_operations, text='x^y')
-        self.bt_st.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
+        self.bt_st.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
 
         self.bt_fact = Button(self.frame_d_operations, text='x!')
-        self.bt_fact.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.factoriaB)
+        self.bt_fact.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.factoriaB)
 
         self.bt_cos = Button(self.frame_d_operations, text='cos')
-        self.bt_cos.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
+        self.bt_cos.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=lambda: self.cos_sin_log(self.bt_cos.configure('text')[-1]))
 
         self.bt_sin = Button(self.frame_d_operations, text='sin')
-        self.bt_sin.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
+        self.bt_sin.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=lambda: self.cos_sin_log(self.bt_sin.configure('text')[-1]))
 
         self.bt_ln = Button(self.frame_d_operations, text='ln')
-        self.bt_ln.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0]), height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=self.bt_step_click)
+        self.bt_ln.configure(width=int(settings.SIZE_OF_BUTTON.split('x')[0])+2, height=int(settings.SIZE_OF_BUTTON.split('x')[-1]), command=lambda: self.cos_sin_log(self.bt_ln.configure('text')[-1]))
 
         self.bt_st.grid(row=0, column=0, padx=2, pady=2)
         self.bt_fact.grid(row=1, column=0, padx=2, pady=2)
@@ -151,7 +150,7 @@ class Application:
 
 
 
-        self.frame_d_operations.place(x=settings.SCREEN_WEIGHT - 240, y=30)
+        self.frame_d_operations.place(x=settings.SCREEN_WEIGHT - 247, y=30)
 
 
     def bt_step_click(event):
@@ -175,21 +174,23 @@ class Application:
     def result_operations(event):
         try:
             text_ans = event.entry_main.get()
-            flag_factorial = False
+            flag_res = False
 
             if "!" in text_ans:
                 indx_factorial = event.entry_main.get().index("!")
-                flag_factorial = True
-                if text_ans[indx_factorial-2] not in '()**2ln(':
-                    result = event.factorial_results()
-                    event.entry_main.delete(0, len(event.entry_main.get()))
-                    event.entry_main.insert(0, result)
 
-                else:
-                    event.entry_main.delete(0, len(event.entry_main.get()))
-                    event.entry_main.insert(0, 'Error!')
+                flag_res = True
 
-            if flag_factorial == False:
+                result = event.factorial_results()
+                event.entry_main.delete(0, len(event.entry_main.get()))
+                event.entry_main.insert(0, result)
+
+            else:
+                event.entry_main.delete(0, len(event.entry_main.get()))
+                event.entry_main.insert(0, 'Error!')
+
+            if flag_res == False:
+
                 result = eval(text_ans)
                 event.entry_main.delete(0, len(text_ans))
                 event.entry_main.insert(0, result)
@@ -197,7 +198,6 @@ class Application:
         except Exception:
             event.entry_main.delete(0, len(event.entry_main.get()))
             event.entry_main.insert(0, 'Error!')
-            print("Error")
 
     def factorial_results(event) -> int:
         number = int(event.entry_main.get()[:event.entry_main.get().index("!")])
@@ -211,6 +211,17 @@ class Application:
         self.ms_b = messagebox.askokcancel('Выход', "Вы уверены?")
         if self.ms_b:
             self.app.destroy()
+
+    def cos_sin_log(event, text):
+
+        numbs = event.entry_main.get()
+        event.entry_main.delete(0, len(event.entry_main.get()))
+        if text == 'cos':
+            event.entry_main.insert(0, str(math.cos(int(numbs))))
+        elif text == 'ln':
+            event.entry_main.insert(0, str(math.log(int(numbs))))
+        else:
+            event.entry_main.insert(0, str(math.sin(int(numbs))))
 
     def display(self):
         self.app.protocol("WM_DELETE_WINDOW", self.message_box_exit)
