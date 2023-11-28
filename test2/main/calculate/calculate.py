@@ -187,7 +187,6 @@ class Application:
 
             else:
                 event.entry_main.delete(0, len(event.entry_main.get()))
-                event.entry_main.insert(0, 'Error!')
 
             if flag_res == False:
 
@@ -197,13 +196,18 @@ class Application:
 
         except Exception:
             event.entry_main.delete(0, len(event.entry_main.get()))
-            event.entry_main.insert(0, 'Error!')
+            event.entry_main.insert(0, 'Некорректный ввод данных!')
 
     def factorial_results(event) -> int:
         number = int(event.entry_main.get()[:event.entry_main.get().index("!")])
+        flag_otr = True if number < 0 else False
+        number = abs(number)
         res = 1
         while number >= 1:
-            res *= number
+            if flag_otr == True:
+                res *= number*-1
+            else:
+                res *= number
             number -= 1
         return res
 
@@ -219,7 +223,7 @@ class Application:
         if text == 'cos':
             event.entry_main.insert(0, str(math.cos(int(numbs))))
         elif text == 'ln':
-            event.entry_main.insert(0, str(math.log(int(numbs))))
+            event.entry_main.insert(0, str(math.log(abs(int(numbs)))))
         else:
             event.entry_main.insert(0, str(math.sin(int(numbs))))
 
